@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PlayGround.scss";
 import PlayGroundGridItem from "../PlayGroundGridItem/PlayGroundGridItem";
+import TopBar from "../TopBar/TopBar";
+import BottomBar from "../BottomBar/BottomBar";
 
 const gridDefaultState = 
 [
   0,0,0,0,0,
-  0,1,1,1,0,
-  0,1,0,1,0,
-  0,1,1,1,0,
+  0,0,0,0,0,
+  0,0,0,0,0,
+  0,0,0,0,0,
   0,0,0,0,0,
 ]
 
 export default function PlayGroundGrid()
 {
   const [gridState, setGridState] = useState(gridDefaultState);
+  const [topbarTitle, setTopbarTitle] = useState("Switches");
+  const [gameStarted, setGameStarted] = useState(false);
 
   const toggleMode = (nodeID,toggleMode) =>
   { 
@@ -26,6 +30,19 @@ export default function PlayGroundGrid()
     setGridState(tempArray);
   }
 
+  useEffect(() => {
+    if(gameStarted === true)
+    {
+      setGridState([
+        0,0,0,0,0,
+        0,1,1,1,0,
+        0,1,0,1,0,
+        0,1,1,1,0,
+        0,0,0,0,0,
+      ]);
+    }
+  },[gameStarted])
+
   const onGridItemClick = (nodeID) =>
   {
     let tempArray = gridState.slice();
@@ -33,22 +50,29 @@ export default function PlayGroundGrid()
     {
       toggleMode(nodeID,1);
     }
-    else 
+    else
     {
       toggleMode(nodeID,0);
     }
-    //setGridState(tempArray);
   }
 
   return(
-    <div className="gridContainer">
-      {
-        gridState.map((item, i) => {
-          return (
-            <PlayGroundGridItem onClick={() => onGridItemClick(i)} node={item} key={i}/>
-          )
-        })
-      }
-    </div>
+    <>
+      <TopBar
+        title={topbarTitle}
+      />
+        <div className="gridContainer">
+          {
+            gridState.map((item, i) => {
+              return (
+                <PlayGroundGridItem onClick={() => onGridItemClick(i)} node={item} key={i}/>
+              )
+            })
+          }
+        </div>
+        <BottomBar startGame={() => {
+          setGameStarted(true);
+        }}/>
+      </>
   ) 
 }
