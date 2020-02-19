@@ -2,10 +2,20 @@
 {
   width: 45px;
   height: 45px;
-  border: 2.5px solid grey;
+  border: 2.5px solid #c7c6c6;
 
   p
   {
     text-align: center;
   }
+}
+
+.disabledNode
+{
+  background-color: #7901b7;
+}
+
+.activeNode
+{
+  background-color: #21ffff;
 }
